@@ -18,6 +18,11 @@ hideHeader = false
 # Intro on main page, content in markdown
 # homeIntroTitle = 'Hi!'
 homeIntroContent = """
+computer programmer, web technologies, distributed systems
+
+- day job includes working with technologies like node.js, typescript, postgresql etc.
+- also tinkering in Go.
+- non-tech interests include history, physics, philosophy and fiction.
 """
 
 singleDateFormat = '2 Jan 2006'
