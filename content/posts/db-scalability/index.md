@@ -9,7 +9,7 @@ toc: true
 readTime: true
 autonumber: true
 math: true
-tags: ["database", "scalability]
+tags: ["database", "scalability"]
 showTags: false
 ---
 
