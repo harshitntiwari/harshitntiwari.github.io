@@ -63,13 +63,13 @@ url = "https://github.com/harshitntiwari"
 name = "posts"
 url = "/posts"
 
-[[params.menu]]
-name = "about"
-url = "/about"
+# [[params.menu]]
+# name = "about"
+# url = "/about"
 
-[[params.menu]]
-name = "library"
-url = "/library"
+# [[params.menu]]
+# name = "library"
+# url = "/library"
 
 # [[params.menu]]
 # name = "tags"
