@@ -1,5 +1,5 @@
 ---
-title: "Primer on Database Scalability"
+title: "Redis pub/sub for inter-microservice communication?"
 # author: "Harshit Tiwari"
 # authorAvatarPath: "/avatar.jpeg"
 date: "2025-10-20"
