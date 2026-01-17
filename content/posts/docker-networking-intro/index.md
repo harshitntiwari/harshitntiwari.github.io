@@ -244,7 +244,7 @@ So currently our two containers: `my-service` and `redis` are connected to this 
 The thing is that the default bridge network has a few limitations. Let us see the first one which is causing us this issue.
 
 
-### Limitations of default network and workarounds
+## Limitations of default network and workarounds
 
 The containers inside a bridge network *can* communicate with each other by referring them with their IP addresses but *cannot* recognise each other through their hostnames. This is because there's no DNS resolution inside the default bridge network.
 
