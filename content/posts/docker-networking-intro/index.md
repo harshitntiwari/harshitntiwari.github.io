@@ -3,8 +3,8 @@ title: "A gentle introduction to Docker networking"
 # author: "Harshit Tiwari"
 # authorAvatarPath: "/avatar.jpeg"
 date: "2026-01-15"
-summary: "Basics of docker networking - motivation and bridge networks"
-description: "Basics of docker networking - motivation and bridge networks"
+summary: "Fundamentals of docker networking - motivation and bridge networks"
+description: "Fundamentals of docker networking - motivation and bridge networks"
 toc: true
 readTime: true
 autonumber: true
@@ -18,6 +18,10 @@ In this post we're going to go through the very basics of Docker networking incl
 This post expects familiarity with Docker basics like Dockerfiles, creating images and running containers.
 
 ## Introduction
+
+Our goal is this post would be to containerize a small application and in the process learn about the fundamentals of docker networking.
+
+Let us start with scaffolding our application first.
 
 Suppose we have a node service which uses Redis as a dependency - it connects to Redis on server start up.
 
@@ -110,7 +114,7 @@ npm install
 ```
 
 At this point your folder structure should look something like this:
-![folder-structure](folder-structure.png)
+![](folder-structure.png)
 
 Given you've a redis instance running at port 6379 on your machine, executing the following command should start your server:
 
