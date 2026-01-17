@@ -243,7 +243,7 @@ docker inspect redis
 
 ![](redis-inspect-1.png)
 
-In the image above you can see the list of network our `redis` container is connected to. Currently it shows just one bridge network named `bridge` which is the default one. We can also see the IP address assigned to this container: `172.17.0.2`.
+In the image above you can see the list of networks our `redis` container is connected to. Currently it shows just one bridge network named `bridge` which is the default one. We can also see the IP address assigned to this container: `172.17.0.2`.
 
 So currently our two containers: `my-service` and `redis` are connected to this default bridge network. That means that these two containers should've full access to each other. So, in theory our containers should be able to communicate with each other. But that isn't the case. Why is that?
 
@@ -274,7 +274,7 @@ But we did try that earlier when we were trying to connect through the hostname 
 
 Point to note: Containers in a default bridge network cannot discover each other through their hostnames, only through their IP address.
 
-This is exactly what happened in our case. Although our node app was trying to connect to the correct host: `redis:6379`, our container `my-service` doesn't actually recognise the hostname `redis` . It only recognises the `redis` container it by it's IP address. So we need to give this information regarding the container `redis`'s hostname to our container `my-service`.
+This is exactly what happened in our case. Although our node app was trying to connect to the correct host: `redis:6379`, our container `my-service` doesn't actually recognise the hostname `redis` . It only recognises the `redis` container by it's IP address. So we need to give this information regarding the container `redis`'s hostname to our container `my-service`.
 
 So how do we do that? Answer: by using `--link` flag in the `docker run` command. This flag is used to *link* the containers together through their names so that they can recognize each other.
 
@@ -296,17 +296,17 @@ The `docker ps` command will also show the two containers running:
 
 So this seems like a happy ending to this topic right? Well no.
 
-See here's the thing: although this solved our problem, the `--link` command line option is actually a legacy feature and might get deprecated very soon and so we shouldn't really be using this. Wait what? You heard that right.
+See here's the thing: although this solved our problem, the `--link` command line option is actually a legacy feature and might get deprecated very soon and so we shouldn't really be using this. You heard that right.
 
-The fact is that default bridge network is actually **not** the recommended way to connect the containers with each other nowadays.
-The reason for this is like I mentioned earlier - default bridge networks have quite a few limitations.
+The fact is that the default bridge network is actually **not** the recommended way to connect the containers with each other nowadays.
+The reason for this is like I mentioned earlier - default bridge networks have quite a few limitations. We've seen the first one: we've to manually link the containers in order for them to be able to discover each other through their hostnames.
 
 Let's see another limitation: bad isolation.
 
 I previously mentioned: every container inside a bridge network has unrestricted access to *all* the containers inside that network. Now since every container that we spin up inside our docker host is by default connected to this default network, every container can gain access to every other container. Which is something which we'll most probably not want most of the times. You would want some containers to have full access to each other while still isolating them from other containers in the host.
 
 But in case of default bridge network because every container is in the same network, there's no isolation between them whatsoever. 
-Moreover when we link the containers with each other using the `--link` flag, all the environment variables are exposed to all such containers even if we don't want them to be.
+Moreover when we link the containers with each other using the `--link` flag, all the environment variables are exposed to all the linked containers even if we don't want them to be.
 
 What can be the solution for this? You can guess it: instead of letting every container getting connected to the default one, create our own bridge networks. These are called the *user-defined bridge networks*.
 
@@ -324,7 +324,8 @@ This will create a brand new bridge network named `my-network`. You can see this
 ![](network-list-2.png)
 
 Now we need to connect our two containers to this network and also remove them from the default one. 
-We can disconnect the containers from the default network and then connect them directly to `my-network` all on the fly while the containers are still running or we can stop the containers and run them again by specifying the network to which I want them connected.
+
+You can disconnect the containers from the default network and then connect them directly to `my-network` all on the fly while the containers are still running or you can stop the containers and run them again by specifying the network to which you want them connected.
 
 Let us go with the 2nd option just for the sake of understanding (although the 1st option is equally valid).
 So first we'll stop and remove the containers:
@@ -342,7 +343,7 @@ docker run --name redis --network my-network -d redis
 docker run --name my-service --env-file ./.env --network my-network my-service:latest
 ```
 
-This will start the two containers and connect them exclusively to the user-defined bridge network `my-network`. You can verify this by inspecting the containers and check the list of networks they're connected to:
+This will start the two containers and connect them exclusively to the user-defined bridge network `my-network`. You can verify this by inspecting the containers and checking the list of networks they're connected to:
 
 ```bash
 docker inspect redis
