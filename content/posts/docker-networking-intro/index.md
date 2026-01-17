@@ -13,11 +13,11 @@ tags: ["docker", "networking"]
 showTags: false
 ---
 
-## Introduction
-
-In this post we're going to go through the very basics of Docker networking including from the motivation of networks in docker, default bridge networks and user-defined networks.
+In this post we're going to go through the very basics of Docker networking including the motivation of networks in docker, default bridge networks and user-defined networks.
 
 This post expects familiarity with Docker basics like Dockerfiles, creating images and running containers.
+
+## Introduction
 
 Suppose we have a node service which uses Redis as a dependency - it connects to Redis on server start up.
 
