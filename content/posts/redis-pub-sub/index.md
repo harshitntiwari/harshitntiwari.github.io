@@ -9,7 +9,7 @@ toc: true
 readTime: true
 autonumber: true
 math: true
-tags: ["database", "scalability"]
+tags: ["redis", "message-queue"]
 showTags: false
 ---
 
