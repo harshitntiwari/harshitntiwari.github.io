@@ -174,7 +174,7 @@ Because the node service establishes a connection to Redis on its start, we firs
 docker run --name redis -d redis
 ``` 
 
-This is quite a simple run command: it runs a container named `redis` and starts the redis process inside it. We've done port forwarding to map port 6379 of our `redis` container to the port 6379 of our host machine. You can see if the `redis` container started successfully by executing the following command:
+This is quite a simple run command: it runs a container named `redis` and starts the redis process inside it. You can see if the `redis` container started successfully by executing the following command:
 
 ```bash
 docker ps
