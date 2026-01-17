@@ -110,7 +110,7 @@ npm install
 ```
 
 At this point your folder structure should look something like this:
-![[Screenshot 2026-01-15 at 8.17.05 PM.png]]
+![folder-structure](Screenshot 2026-01-15 at 8.17.05 PM.png)
 
 Given you've a redis instance running at port 6379 on your machine, executing the following command should start your server:
 
