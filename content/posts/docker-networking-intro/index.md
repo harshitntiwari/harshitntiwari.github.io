@@ -252,7 +252,7 @@ The thing is that the default bridge network has a few limitations. Let us see t
 
 ## Limitations of default network and workarounds
 
-The containers inside a bridge network *can* communicate with each other by referring them with their IP addresses but *cannot* recognise each other through their hostnames. This is because there's no DNS resolution inside the default bridge network.
+The containers inside a default bridge network *can* communicate with each other by referring them with their IP addresses but *cannot* recognise each other through their hostnames. This is because there's no DNS resolution inside the default bridge network.
 
 We can verify this as well. 
 In the `.env` file, assign `REDIS_HOST` to be the IP address of the `redis` container, i.e. `172.17.0.2`.  Then run the `my-service` container again:
