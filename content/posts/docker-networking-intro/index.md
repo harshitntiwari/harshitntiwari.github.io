@@ -110,7 +110,7 @@ npm install
 ```
 
 At this point your folder structure should look something like this:
-![folder-structure](Screenshot 2026-01-15 at 8.17.05 PM.png)
+![folder-structure](folder-structure.png)
 
 Given you've a redis instance running at port 6379 on your machine, executing the following command should start your server:
 
@@ -118,7 +118,7 @@ Given you've a redis instance running at port 6379 on your machine, executing th
 npm run start
 ```
 
-![[Screenshot 2026-01-15 at 8.22.27 PM.png]]
+![](service-start-1.png)
 
 In the image above you can see you have two services running: Redis at `localhost:6379` and the node server at `localhost:3000`.
 
@@ -131,7 +131,9 @@ Let us start doing that step by step.
 ## Containerizing the application
 
 First of all to run the two containers I mentioned, we would need two images: the Redis image and an image for our node service. 
+
 Redis image is officially available on the [docker hub](https://hub.docker.com/_/redis) itself, so we don't really need to do anything for it. 
+
 Now we want to build an image for our Node service. For creating this image we will need a Dockerfile. Add a file named `Dockerfile` in your project directory and add the following to it:
 
 ```Dockerfile
@@ -174,7 +176,7 @@ This is quite a simple run command: it runs a container named `redis` and starts
 docker ps
 ```
 
-![[Screenshot 2026-01-16 at 12.24.20 AM.png]]
+![](container-list-1.png)
 
 Now we want to run the node service based on the image (`my-service:latest`) that we earlier created. For that we'll use the following command:
 
@@ -186,7 +188,7 @@ This command starts a container named `my-service` and we've also specified the 
 
 On running this command you'll notice that the service will try to start but will not be able to connect to redis with the following connection refused error:
 
-![[Screenshot 2026-01-16 at 12.32.00 AM.png]]
+![](redis-error-1.png)
 
 The reason for this is, if you notice in the `.env` file, you'll see the `REDIS_HOST` specified as `localhost`. So what's the issue with that? Why can't we connect? 
 
@@ -205,7 +207,7 @@ docker run --name my-service --env-file ./.env my-service:latest
 
 The container will again try to connect to redis on startup but will fail again. This time however, the error is a bit different:
 
-![[Screenshot 2026-01-16 at 12.45.15 AM.png]]
+![](redis-error-2.png)
 
 Instead of saying "connection refused" like the last time, this time the error is: "address not found". Why is that? This is because last time the service knew where to connect to (i.e. `localhost:6379`) but couldn't connect to it because there was no redis process running there. This time however, it failed at the first step itself: the service couldn't even figure out where to connect to. Hence the address not found error.
 
@@ -225,7 +227,7 @@ You can see the networks in your host using this command:
 docker network ls
 ```
 
-![[Screenshot 2026-01-17 at 2.01.59 PM.png]]
+![](network-list-1.png)
 
 The very first network you see in the result above is the default bridge network.
 You can see the networks that your containers are connected to by running the command:
@@ -235,7 +237,7 @@ You can see the networks that your containers are connected to by running the co
 docker inspect redis
 ```
 
-![[Screenshot 2026-01-17 at 2.07.26 PM.png]]
+![](redis-inspect-1.png)
 
 In the image above you can see the list of network our `redis` container is connected to. Currently it shows just one bridge network named `bridge` which is the default one. We can also see the IP address assigned to this container: `172.17.0.2`.
 
@@ -256,7 +258,7 @@ docker rm my-service
 docker run --name my-service --env-file ./.env my-service:latest
 ```
 
-![[Screenshot 2026-01-17 at 2.35.42 PM.png]]
+![](service-start-2.png)
 
 You'll see that your container runs successfully and your app connects to Redis at: `172.17.0.2:6379`.
 
@@ -282,13 +284,14 @@ You can see we've provided an additional `--link` command line option in which w
 
 Now your container will start successfully and your app will also start and connect to redis successfully:
 
-![[Screenshot 2026-01-16 at 12.54.55 AM.png]]
+![](service-start-3.png)
 
 The `docker ps` command will also show the two containers running:
 
-![[Screenshot 2026-01-16 at 12.55.46 AM.png]]
+![](container-list-2.png)
 
 So this seems like a happy ending to this topic right? Well no.
+
 See here's the thing: although this solved our problem, the `--link` command line option is actually a legacy feature and might get deprecated very soon and so we shouldn't really be using this. Wait what? You heard that right.
 
 The fact is that default bridge network is actually **not** the recommended way to connect the containers with each other nowadays.
@@ -314,7 +317,7 @@ docker network create -d bridge my-network
 
 This will create a brand new bridge network named `my-network`. You can see this network by running: `docker network ls`:
 
-![[Screenshot 2026-01-17 at 2.53.22 PM.png]]
+![](network-list-2.png)
 
 Now we need to connect our two containers to this network and also remove them from the default one. 
 We can disconnect the containers from the default network and then connect them directly to `my-network` all on the fly while the containers are still running or we can stop the containers and run them again by specifying the network to which I want them connected.
@@ -341,7 +344,8 @@ This will start the two containers and connect them exclusively to the user-defi
 docker inspect redis
 ```
 
-![[Screenshot 2026-01-17 at 3.12.39 PM.png]]
+![](redis-inspect-2.png)
+
 In the networks list above, you can no longer see the default network `bridge` and only the one that we created `my-network`.
 
 There are quite a few advantages of user-defined networks:
