@@ -121,7 +121,8 @@ However, consider these scenarios:
 
 - The consumer crashes mid processing, or takes longer than the visibility timeout to process the message
 - The consumer makes the delete call but the delete call fails due to a network issue
-  In these scenarios, the message is not deleted within the visibility timeout window and _will_ be delivered again to the same or some other consumer (and thus duplicate processing), regardless of which type of queue you're using. Therefore, your consumer should _always_ be idempotent to prevent unintended consequences, no matter which queue you use.
+
+In these scenarios, the message is not deleted within the visibility timeout window and _will_ be delivered again to the same or some other consumer (and thus duplicate processing), regardless of which type of queue you're using. Therefore, your consumer should _always_ be idempotent to prevent unintended consequences, no matter which queue you use.
 
 It is probably because of such scenarios, that most references including the official docs, call this guarantee "exactly-once processing" and not exactly-once delivery (as re-deliveries are possible). I am not a fan of this terminology, but what they actually mean by exactly-once processing is that FIFO queues prevent duplicates to be sent to the consumer from the producer side (that too within the 5 minute limit).
 
