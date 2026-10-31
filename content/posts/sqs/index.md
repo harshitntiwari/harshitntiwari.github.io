@@ -13,9 +13,9 @@ tags: ["sqs", "message-queue"]
 showTags: false
 ---
 
-There are two types of queues that AWS's SQS provides: standard and fifo.
+There are two types of queues that AWS's SQS provides: Standard and FIFO.
 
-Before choosing which one to use, it is very important that we understand basic differences between the both and which guarantees each one provides and more importantly what those guarantees mean in the first place.
+Before choosing which one to use, it is very important that we understand basic differences between the both, which guarantees each one provides and even more importantly what those guarantees mean in the first place.
 
 ## Standard queue
 
